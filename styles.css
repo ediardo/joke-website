@@ -1,0 +1,15 @@
+body {
+  font-family: Arial, sans-serif;
+}
+.joke-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.joke-table th,
+.joke-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+.rating {
+  cursor: pointer;
+}

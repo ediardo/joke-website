@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My HTML Structure</title>
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Jokestr</h1>
+    </header>
+    <main>
+      <table id="jokeTable">
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Punchline</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <form id="jokeForm">
+        <label for="questionInput">Question:</label>
+        <input type="text" id="questionInput" required />
+
+        <label for="punchlineInput">Punchline:</label>
+        <input type="text" id="punchlineInput" required />
+
+        <button type="submit">Add Joke</button>
+      </form>
+    </main>
+
+    <footer>
+      <p>&copy; 2024. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const jokes = [
+        {
+          question: "Why do programmers prefer dark mode?",
+          punchline: "Because light attracts bugs!",
+          rating: 0,
+        },
+        {
+          question: "What's the most used language in programming?",
+          punchline: "Profanity!",
+          rating: 0,
+        },
+        // Add more jokes here...
+      ];
+
+      const jokeTable = document.getElementById("jokeTable");
+      const tbody = jokeTable.querySelector("tbody");
+      const jokeForm = document.getElementById("jokeForm");
+      const questionInput = document.getElementById("questionInput");
+      const punchlineInput = document.getElementById("punchlineInput");
+
+      function renderJokes() {
+        tbody.innerHTML = "";
+
+        jokes.forEach((joke) => {
+          const jokeRow = document.createElement("tr");
+          const questionCell = document.createElement("td");
+          questionCell.textContent = joke.question;
+
+          const punchlineCell = document.createElement("td");
+          const punchlineSpan = document.createElement("span");
+          punchlineSpan.textContent = joke.punchline;
+          punchlineSpan.classList.add("hidden");
+          punchlineCell.appendChild(punchlineSpan);
+
+          // Create a div to hold the punchline and button
+          const punchlineDiv = document.createElement("div");
+
+          // Add reveal button and event listener
+          const revealButton = document.createElement("button");
+          revealButton.textContent = "Reveal Punchline";
+          punchlineDiv.appendChild(revealButton);
+
+          punchlineCell.appendChild(punchlineDiv);
+
+          const ratingCell = document.createElement("td");
+          ratingCell.textContent = joke.rating;
+
+          // Create thumbs up button
+          const thumbsUpButton = document.createElement("button");
+          thumbsUpButton.textContent = "👍";
+          thumbsUpButton.addEventListener("click", () => {
+            alert("You've given this joke a thumbs up! Keep laughing!");
+          });
+
+          // Create thumbs down button
+          const thumbsDownButton = document.createElement("button");
+          thumbsDownButton.textContent = "👎";
+          thumbsDownButton.addEventListener("click", () => {
+            alert("Sorry you didn't like this joke. Keep searching for more laughs!");
+          });
+
+          // Append buttons to rating cell
+          ratingCell.appendChild(thumbsUpButton);
+          ratingCell.appendChild(thumbsDownButton);
+          jokeRow.appendChild(questionCell);
+          jokeRow.appendChild(punchlineCell);
+          jokeRow.appendChild(ratingCell);
+
+          tbody.appendChild(jokeRow);
+
+          revealButton.addEventListener("click", () => {
+            punchlineSpan.classList.remove("hidden"); // Show punchline when clicked
+            revealButton.style.display = "none"; // Hide reveal button
+          });
+        });
+      }
+
+      function addJoke(event) {
+        event.preventDefault();
+
+        const question = questionInput.value;
+        const punchline = punchlineInput.value;
+
+        if (question.trim() === "" || punchline.trim() === "") {
+          return;
+        }
+
+        const newJoke = {
+          question: question,
+          punchline: punchline,
+          rating: 0,
+        };
+
+        jokes.push(newJoke);
+        renderJokes();
+
+        questionInput.value = "";
+        punchlineInput.value = "";
+      }
+
+      jokeForm.addEventListener("submit", addJoke);
+
+      renderJokes();
+    </script>
+  </body>
+</html>
